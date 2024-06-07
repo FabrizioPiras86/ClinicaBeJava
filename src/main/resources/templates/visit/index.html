@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/bootstrap5 :: head"></head>
+<body>
+<header th:replace="layout/bootstrap5 :: header"></header>
+<div class="container text-center">
+    <h1>Visits</h1>
+    <a class="btn btn-primary mb-3" th:href="@{/visit/create}">Add New Visit</a>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Description</th>
+            <th>Date of Visit</th>
+            <th>Animal Name</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="visit : ${visits}">
+            <td th:text="${visit.description}">Description</td>
+            <td th:text="${visit.dov}">Date</td>
+            <td>
+                <span th:if="${visit.animal != null}" th:text="${visit.animal.name}">Animal Name</span>
+                <span th:unless="${visit.animal != null}"></span>
+            </td>
+            <td>
+                <a class="btn btn-warning" th:href="@{/visit/update/{id}(id=${visit.id})}">Edit</a>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" th:data-bs-target="'#deleteModal-' + ${visit.id}">Delete</button>
+
+                <!-- Modal -->
+                <div class="modal fade" th:id="'deleteModal-' + ${visit.id}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this visit?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <a class="btn btn-danger" th:href="@{/visit/delete/{id}(id=${visit.id})}">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<footer th:replace="~{layout/bootstrap5 :: footer}"></footer>
+</body>
+</html>

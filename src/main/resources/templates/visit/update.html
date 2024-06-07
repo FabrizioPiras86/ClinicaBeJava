@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/bootstrap5 :: head"></head>
+<body>
+<header th:replace="layout/bootstrap5 :: header"></header>
+<div class="container">
+    <h1>Update Visit</h1>
+    <form th:action="@{/visit/update/{id}(id=${visit.id})}" th:object="${visit}" method="post">
+        <div class="mb-3">
+            <label for="description" class="form-label">Description:</label>
+            <input type="text" id="description" th:field="*{description}" required class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="dov" class="form-label">Date of Visit:</label>
+            <input type="date" id="dov" th:field="*{dov}" required class="form-control">
+        </div>
+        <input type="hidden" th:field="*{animal}" >
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" onclick="window.location.href='/visit'" class="btn btn-secondary">Cancel</button>
+    </form>
+</div>
+<footer th:replace="~{layout/bootstrap5 :: footer}"></footer>
+</body>
+</html>

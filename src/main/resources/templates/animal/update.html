@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/bootstrap5 :: head"></head>
+<body>
+<header th:replace="layout/bootstrap5 :: header"></header>
+<div class="container">
+    <h1 style="text-align: center;">Update Animal</h1>
+    <form th:action="@{/animal/update/{id}(id=${animal.id})}" th:object="${animal}" method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name:</label>
+            <input type="text" id="name" th:field="*{name}" required class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="species" class="form-label">Species:</label>
+            <input type="text" id="species" th:field="*{species}" required class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="mastername" class="form-label">Master Name:</label>
+            <input type="text" id="mastername" th:field="*{mastername}" required class="form-control">
+        </div>
+
+        <h2 style="text-align: center;">Visits</h2>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Description</th>
+                <th>Date of Visit</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="visit : ${animal.visits}">
+                <td th:text="${visit.description}">Description</td>
+                <td th:text="${visit.dov}">Date of Visit</td>
+                <td>
+                    <div style="text-align: center;">
+                        <a th:href="@{'/visit/update/'}+${visit.id}" class="btn btn-warning btn-sm">Edit</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div style="text-align: center;">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" onclick="window.location.href='/animal'" class="btn btn-secondary">Cancel</button>
+        </div>
+    </form>
+</div>
+<footer th:replace="~{layout/bootstrap5 :: footer}"></footer>
+</body>
+</html>

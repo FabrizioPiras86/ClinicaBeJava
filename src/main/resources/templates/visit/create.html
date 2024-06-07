@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/bootstrap5 :: head"></head>
+
+<body>
+<header th:replace="layout/bootstrap5 :: header"></header>
+
+<div class="container mt-4">
+    <h1>Add New Visit</h1>
+    <form th:action="@{/visit/create}" th:object="${visit}" method="post">
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input type="text" class="form-control" id="description" th:field="*{description}" required>
+        </div>
+        <div class="mb-3">
+            <label for="dov" class="form-label">Date of Visit</label>
+            <input type="date" class="form-control" id="dov" th:field="*{dov}" required>
+        </div>
+        <div class="mb-3">
+            <label for="animal" class="form-label">Animal</label>
+            <select  th:field="*{animal}" class="form-control" required>
+                <option th:each="animal : ${animals}" th:value="${animal.id}" th:text="${animal.name}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a th:href="@{/visit/}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+<footer th:replace="~{layout/bootstrap5 :: footer}"></footer>
+</body>
+</html>

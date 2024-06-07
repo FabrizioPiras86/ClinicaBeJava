@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/bootstrap5 :: head"></head>
+<body>
+<header th:replace="layout/bootstrap5 :: header"></header>
+<div class="container">
+    <h1 style="text-align: center;">List of Animals</h1>
+    <div style="text-align: center;">
+        <a class="btn btn-primary mb-3" th:href="@{/animal/create}">Add New Animal</a>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Species</th>
+            <th>Master Name</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="animal : ${animals}">
+            <td th:text="${animal.id}"></td>
+            <td th:text="${animal.name}"></td>
+            <td th:text="${animal.species}"></td>
+            <td th:text="${animal.mastername}"></td>
+            <td>
+                <div style="text-align: center;">
+                    <a class="btn btn-warning btn-sm" th:href="@{'/animal/update/' + ${animal.id}}">Edit</a>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" th:data-bs-target="'#deleteModal-' + ${animal.id}">Delete</button>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" th:id="'deleteModal-' + ${animal.id}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this animal?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <a class="btn btn-danger" th:href="@{'/animal/delete/' + ${animal.id}}">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<footer th:replace="~{layout/bootstrap5 :: footer}"></footer>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
