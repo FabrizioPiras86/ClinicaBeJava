@@ -5,6 +5,8 @@ import com.training.clinica.repository.VisitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,13 +29,16 @@ public class VisitService {
     }
 
     public Visit updateVisit(Long id, Visit updatedVisit) {
-        Optional<Visit> existingVisit = visitRepository.findById(id);
-        if (existingVisit.isPresent()) {
-            Visit visit = existingVisit.get();
-            visit.setDescription(updatedVisit.getDescription());
-            visit.setDov(updatedVisit.getDov());
-            visit.setAnimal(updatedVisit.getAnimal());
-            return visitRepository.save(visit);
+        Optional<Visit> existingVisitOptional = visitRepository.findById(id);
+        if (existingVisitOptional.isPresent()) {
+            Visit existingVisit = existingVisitOptional.get();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            existingVisit.setDescription(updatedVisit.getDescription());
+            existingVisit.setDov(LocalDate.parse(updatedVisit.getDov().format(formatter), formatter));
+            existingVisit.setAnimal(updatedVisit.getAnimal());
+
+            return visitRepository.save(existingVisit);
         }
         return null;
     }

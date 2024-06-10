@@ -33,14 +33,13 @@ public class AnimalService {
 
     public Animal updateAnimal(Long id, Animal updatedAnimal) {
         Optional<Animal> existingAnimal = animalRepository.findById(id);
-        if (existingAnimal.isPresent()) {
+
             Animal animal = existingAnimal.get();
             animal.setName(updatedAnimal.getName());
             animal.setSpecies(updatedAnimal.getSpecies());
             animal.setMastername(updatedAnimal.getMastername());
             return animalRepository.save(animal);
-        }
-        return null;
+
     }
 
     public List<Animal> getAllAnimals() {

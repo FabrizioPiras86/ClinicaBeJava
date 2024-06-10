@@ -29,9 +29,9 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="visit : ${animal.visits}">
+            <tr th:each="visit, stat : ${animal.visits}">
                 <td th:text="${visit.description}">Description</td>
-                <td th:text="${visit.dov}">Date of Visit</td>
+                <td th:text="${formattedDates[stat.index]}">Date of Visit</td>
                 <td>
                     <div style="text-align: center;">
                         <a th:href="@{'/visit/update/'}+${visit.id}" class="btn btn-warning btn-sm">Edit</a>

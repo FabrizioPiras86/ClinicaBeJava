@@ -18,11 +18,8 @@
         <tbody>
         <tr th:each="visit : ${visits}">
             <td th:text="${visit.description}">Description</td>
-            <td th:text="${visit.dov}">Date</td>
-            <td>
-                <span th:if="${visit.animal != null}" th:text="${visit.animal.name}">Animal Name</span>
-                <span th:unless="${visit.animal != null}"></span>
-            </td>
+            <td th:text="${visit.formattedDov}">Date</td>
+            <td th:text="${visit.animalName}">Animal Name</td>
             <td>
                 <a class="btn btn-warning" th:href="@{/visit/update/{id}(id=${visit.id})}">Edit</a>
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" th:data-bs-target="'#deleteModal-' + ${visit.id}">Delete</button>

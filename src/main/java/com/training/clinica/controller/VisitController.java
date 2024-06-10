@@ -2,6 +2,7 @@ package com.training.clinica.controller;
 
 import com.training.clinica.controller.service.AnimalService;
 import com.training.clinica.controller.service.VisitService;
+import com.training.clinica.controller.service.dto.VisitDto;
 import com.training.clinica.entities.Visit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/visit")
@@ -23,11 +26,17 @@ public class VisitController {
     @Autowired
     private AnimalService animalService;
 
-
     @GetMapping("/")
     public String index(Model model) {
         List<Visit> visits = visitService.getAllVisits();
-        model.addAttribute("visits", visits);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        List<VisitDto> visitDtos = visits.stream().map(visit -> new VisitDto(
+                visit.getId(),
+                visit.getDescription(),
+                visit.getDov().format(formatter),
+                visit.getAnimal().getName()
+        )).collect(Collectors.toList());
+        model.addAttribute("visits", visitDtos);
         return "visit/index";
     }
 
@@ -40,7 +49,6 @@ public class VisitController {
 
     @PostMapping("/create")
     public String createVisit(@ModelAttribute Visit visit) {
-        System.out.println(visit);
         visitService.saveVisit(visit);
         return "redirect:/visit/";
     }
@@ -49,7 +57,13 @@ public class VisitController {
     public String showEditForm(@PathVariable Long id, Model model) {
         Visit visit = visitService.getVisitById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid visit Id:" + id));
+
+        // Formattazione della data
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String formattedDate = visit.getDov().format(formatter);
+
         model.addAttribute("visit", visit);
+        model.addAttribute("formattedDate", formattedDate);
         return "visit/update";
     }
 
